@@ -8,11 +8,24 @@ from domain.agents.question_analyst import QuestionAnalyst
 
 @dataclass
 class QAService:
-    """Orchestrates the three agents to answer questions."""
+    """Orchestrates the three agents to answer questions.
+
+    Attributes
+    ----------
+    analyst:
+        Agent responsible for analyzing the question.
+    researcher:
+        Agent that searches for relevant snippets.
+    writer:
+        Agent that writes the final answer.
+    verbose:
+        Whether to enable Crew progress output.
+    """
 
     analyst: QuestionAnalyst
     researcher: ContentResearcher
     writer: AnswerWriter
+    verbose: bool = True
 
     def answer(self, question: str) -> str:
         """Execute the crew to produce the final answer."""
@@ -69,7 +82,7 @@ class QAService:
         crew = Crew(
             agents=[analyst_agent, researcher_agent, writer_agent],
             tasks=[analyze, research, write],
-            verbose=False,
+            verbose=self.verbose,
         )
 
         return crew.kickoff(inputs={"question": question})
