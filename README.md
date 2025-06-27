@@ -9,7 +9,7 @@ See `AGENTS.md` for contributor guidelines.
 ```bash
 pip install -r requirements.txt
 ```
-2. Create a `.env` file based on the variables in `.env.example` and provide your tokens.
+2. Create a `.env` file based on the variables in `.env.example` and provide your tokens. `CREW_VERBOSE` controls whether CrewAI prints progress (default `True`).
 3. Run the ingestion script before starting the bot:
 ```bash
 python scripts/ingest_document.py

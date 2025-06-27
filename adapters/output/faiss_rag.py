@@ -1,9 +1,6 @@
 from pathlib import Path
 from typing import List
 
-import faiss
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
 from domain.ports.rag_port import RAGPort
 
 

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from adapters.input.telegram_bot import TelegramBot
@@ -18,6 +19,7 @@ class Container:
         rag = FAISSRAG(index_dir)
         llm = DeepSeekLLM()
         tool = DocumentSearchTool(rag)
+        verbose = os.getenv("CREW_VERBOSE", "True").lower() in ("1", "true", "yes")
 
         analyst = QuestionAnalyst(llm=llm)
         researcher = ContentResearcher(tool=tool)
@@ -27,5 +29,6 @@ class Container:
             analyst=analyst,
             researcher=researcher,
             writer=writer,
+            verbose=verbose,
         )
         self.bot = TelegramBot(qa_handler=self.qa_service.answer)
