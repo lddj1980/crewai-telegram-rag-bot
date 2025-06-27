@@ -1,14 +1,18 @@
 from dataclasses import dataclass
 
+from domain.ports.llm_port import LLMPort
+
 
 @dataclass
 class QuestionAnalyst:
-    """Analyzes a user question and extracts main topics."""
+    """Analyzes a user question and extracts main topics using an LLM."""
+
+    llm: LLMPort
 
     def analyze(self, question: str) -> str:
-        """Return a short description of main topics.
-
-        This is a placeholder implementation that simply returns the question
-        itself. A real implementation would use NLP techniques.
-        """
-        return question
+        """Return a short description of main topics."""
+        prompt = (
+            "Liste de forma resumida os principais tópicos da pergunta a seguir:"\
+            f"\n{question}\nTópicos:"
+        )
+        return self.llm.complete(prompt)

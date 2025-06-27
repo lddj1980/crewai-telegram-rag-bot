@@ -17,9 +17,10 @@ class Container:
         index_dir = Path("vector_store/faiss_index")
         rag = FAISSRAG(index_dir)
         llm = DeepSeekLLM()
+        tool = DocumentSearchTool(rag)
 
-        analyst = QuestionAnalyst()
-        researcher = ContentResearcher(rag=rag)
+        analyst = QuestionAnalyst(llm=llm)
+        researcher = ContentResearcher(tool=tool)
         writer = AnswerWriter(llm=llm)
 
         self.qa_service = QAService(
