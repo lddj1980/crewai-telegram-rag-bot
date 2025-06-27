@@ -12,5 +12,10 @@ class AnswerWriter:
 
     def write(self, question: str, context: List[str]) -> str:
         """Return the final answer given the question and context."""
-        prompt = f"Question: {question}\nContext: {' '.join(context)}\nAnswer:"
+        snippet_text = "\n".join(context)
+        prompt = (
+            "Você é um redator especializado. Utilize os trechos abaixo para "
+            f"responder à pergunta de forma clara.\nPergunta: {question}\n\n"
+            f"Trechos:\n{snippet_text}\n\nResposta:"
+        )
         return self.llm.complete(prompt)
