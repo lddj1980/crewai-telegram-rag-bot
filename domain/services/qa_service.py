@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 from domain.agents.answer_writer import AnswerWriter
 from domain.agents.content_researcher import ContentResearcher
