@@ -1,0 +1,3 @@
+The CrewAI Telegram RAG Bot demonstrates how retrieval-augmented generation can enhance a chat experience. It combines CrewAI's agent orchestration with the DeepSeek language model and a FAISS vector store to produce answers grounded in an existing text. This repository shows a minimal yet functional approach to building such an interactive assistant.
+
+This document is the starting point for the bot's knowledge base. When you run the ingestion script, these paragraphs are indexed so the bot can reference them whenever someone asks a question. Feel free to expand the content here or adapt the code to point at your own data sources.
