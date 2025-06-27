@@ -15,6 +15,11 @@ INDEX_DIR = Path("vector_store/faiss_index")
 
 
 def main() -> None:
+    if not DATA_FILE.exists():
+        raise FileNotFoundError(f"Document not found at {DATA_FILE}")
+
+    INDEX_DIR.mkdir(parents=True, exist_ok=True)
+
     text = DATA_FILE.read_text(encoding="utf-8")
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     docs = splitter.create_documents([text])

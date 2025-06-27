@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 from typing import List
 
-from domain.ports.rag_port import RAGPort
+from tools.document_search_tool import DocumentSearchTool
 
 
 @dataclass
 class ContentResearcher:
     """Searches for relevant document snippets."""
 
-    rag: RAGPort
+    tool: DocumentSearchTool
 
     def research(self, topics: str) -> List[str]:
         """Return snippets relevant to the given topics."""
-        return self.rag.query(topics)
+        return self.tool.run(topics)
