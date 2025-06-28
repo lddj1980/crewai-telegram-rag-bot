@@ -19,7 +19,11 @@ class FAISSRAG(RAGPort):
 
         self.index_path = index_path
         self.embeddings = OpenAIEmbeddings()
-        self.store = FAISS.load_local(str(index_path), self.embeddings)
+        self.store = FAISS.load_local(
+            str(index_path),
+            self.embeddings,
+            allow_dangerous_deserialization=True,
+        )
 
     def query(self, question: str) -> List[str]:
         docs = self.store.similarity_search(question, k=3)

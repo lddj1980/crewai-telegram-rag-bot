@@ -21,7 +21,8 @@ python scripts/ingest_document.py
    This reads `data/documento.txt` and writes the FAISS index to
    `vector_store/faiss_index`. Edit `scripts/ingest_document.py` if you
    want to use different paths.
-4. Start the bot:
+4. Start the bot (the index is loaded with `allow_dangerous_deserialization`
+   because it is created locally):
 ```bash
 python -m app.main
 ```
