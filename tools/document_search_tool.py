@@ -12,8 +12,8 @@ except Exception:  # pragma: no cover - fallback when langchain isn't installed
 class DocumentSearchTool(BaseTool):
     """Search the document for relevant snippets."""
 
-    name = "document_search"
-    description = "Busca trechos relevantes em um documento."
+    name: str = "document_search"
+    description: str = "Busca trechos relevantes em um documento."
 
     def __init__(self, rag: RAGPort) -> None:
         super().__init__()
