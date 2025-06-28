@@ -26,5 +26,8 @@ python scripts/ingest_document.py
 ```bash
 python -m app.main
 ```
+5. Abra o aplicativo do Telegram, procure pelo nome do seu bot e envie o
+   comando `/start`. Em seguida, envie suas perguntas como mensagens de texto
+   para receber as respostas geradas pelo RAG.
 
 Run tests with `pytest -q`.
