@@ -1,4 +1,9 @@
-"""Script to ingest the base document into a FAISS index."""
+"""Script to ingest the base document into a FAISS index.
+
+The text is loaded from ``DATA_FILE`` (``data/documento.txt`` by default) and
+the resulting index is stored in ``INDEX_DIR`` (``vector_store/faiss_index``).
+Run this script once before starting the bot.
+"""
 
 from pathlib import Path
 
