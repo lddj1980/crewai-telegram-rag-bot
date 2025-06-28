@@ -1,20 +1,33 @@
-"""Script to ingest the base document into a FAISS index."""
+"""Script to ingest the base document into a FAISS index.
+
+The text is loaded from ``DATA_FILE`` (``data/documento.txt`` by default) and
+the resulting index is stored in ``INDEX_DIR`` (``vector_store/faiss_index``).
+OpenAI credentials are read from the environment. Set ``OPENAI_API_KEY`` and
+``OPENAI_API_BASE`` before running. Run this script once before starting the bot.
+"""
 
 from pathlib import Path
+import os
 
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from dotenv import load_dotenv
 
 
 load_dotenv()
+
+REQUIRED_VARS = ("OPENAI_API_KEY", "OPENAI_API_BASE")
 
 DATA_FILE = Path("data/documento.txt")
 INDEX_DIR = Path("vector_store/faiss_index")
 
 
 def main() -> None:
+    for var in REQUIRED_VARS:
+        if not os.environ.get(var):
+            raise EnvironmentError(f"Environment variable {var} is not set")
+
     if not DATA_FILE.exists():
         raise FileNotFoundError(f"Document not found at {DATA_FILE}")
 
