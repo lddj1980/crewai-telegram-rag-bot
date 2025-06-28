@@ -22,6 +22,9 @@ def test_ingest_document(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setitem(sys.modules, "dotenv", ModuleType("dotenv"))
     sys.modules["dotenv"].load_dotenv = Mock()
 
+    monkeypatch.setenv("OPENAI_API_KEY", "k")
+    monkeypatch.setenv("OPENAI_API_BASE", "url")
+
     ingest_document = importlib.import_module("scripts.ingest_document")
 
     data_file = tmp_path / "doc.txt"
