@@ -1,6 +1,8 @@
 python-telegram-bot
 crewai
 langchain
+langchain-community
+langchain-openai
 faiss-cpu
 python-dotenv
 openai
