@@ -5,8 +5,8 @@ from openai import OpenAI
 from domain.ports.llm_port import LLMPort
 
 
-class DeepSeekLLM(LLMPort):
-    """LLM adapter using the DeepSeek API via the OpenAI client."""
+class OpenAILLM(LLMPort):
+    """LLM adapter using the OpenAI API."""
 
     def __init__(self) -> None:
         api_key = os.environ.get("OPENAI_API_KEY")
@@ -15,7 +15,7 @@ class DeepSeekLLM(LLMPort):
 
     def complete(self, prompt: str) -> str:
         chat = self.client.chat.completions.create(
-            model="deepseek-chat",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
         )
         return chat.choices[0].message.content

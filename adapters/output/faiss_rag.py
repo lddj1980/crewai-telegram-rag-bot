@@ -14,12 +14,16 @@ class FAISSRAG(RAGPort):
                 f"Index not found at {index_path}. Run ingest_document.py first."
             )
 
-        from langchain.embeddings import OpenAIEmbeddings
-        from langchain.vectorstores import FAISS
+        from langchain_openai import OpenAIEmbeddings
+        from langchain_community.vectorstores import FAISS
 
         self.index_path = index_path
         self.embeddings = OpenAIEmbeddings()
-        self.store = FAISS.load_local(str(index_path), self.embeddings)
+        self.store = FAISS.load_local(
+            str(index_path),
+            self.embeddings,
+            allow_dangerous_deserialization=True,
+        )
 
     def query(self, question: str) -> List[str]:
         docs = self.store.similarity_search(question, k=3)
