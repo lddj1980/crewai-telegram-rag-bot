@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from adapters.input.telegram_bot import TelegramBot
-from adapters.output.deepseek_llm import DeepSeekLLM
+from adapters.output.openai_llm import OpenAILLM
 from adapters.output.faiss_rag import FAISSRAG
 from domain.agents.answer_writer import AnswerWriter
 from domain.agents.content_researcher import ContentResearcher
@@ -17,7 +17,7 @@ class Container:
     def __init__(self) -> None:
         index_dir = Path("vector_store/faiss_index")
         rag = FAISSRAG(index_dir)
-        llm = DeepSeekLLM()
+        llm = OpenAILLM()
         tool = DocumentSearchTool(rag)
         verbose = os.getenv("CREW_VERBOSE", "True").lower() in ("1", "true", "yes")
 
