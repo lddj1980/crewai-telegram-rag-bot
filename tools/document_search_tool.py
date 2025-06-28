@@ -8,7 +8,6 @@ except Exception:  # pragma: no cover - fallback when pydantic isn't installed
     def PrivateAttr(default=None):  # type: ignore[misc]
         return default
 
-
 try:  # pragma: no cover - optional dependency
     from langchain_core.tools import BaseTool
 except Exception:  # pragma: no cover - fallback when langchain isn't installed
