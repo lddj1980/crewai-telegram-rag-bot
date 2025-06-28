@@ -1,10 +1,15 @@
-"""Script to ingest the base document into a FAISS index."""
+"""Script to ingest the base document into a FAISS index.
+
+The text is loaded from ``DATA_FILE`` (``data/documento.txt`` by default) and
+the resulting index is stored in ``INDEX_DIR`` (``vector_store/faiss_index``).
+Run this script once before starting the bot.
+"""
 
 from pathlib import Path
 
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from dotenv import load_dotenv
 
 
