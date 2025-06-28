@@ -1,6 +1,6 @@
 # crewai-telegram-rag-bot
 
-This project implements a Telegram bot that answers questions using Retrieval-Augmented Generation (RAG) powered by CrewAI. The bot uses a vector store based on FAISS and the DeepSeek LLM API to generate responses.
+This project implements a Telegram bot that answers questions using Retrieval-Augmented Generation (RAG) powered by CrewAI. The bot uses a vector store based on FAISS and the OpenAI API to generate responses.
 
 See `AGENTS.md` for contributor guidelines.
 
@@ -9,11 +9,18 @@ See `AGENTS.md` for contributor guidelines.
 ```bash
 pip install -r requirements.txt
 ```
-2. Create a `.env` file based on the variables in `.env.example` and provide your tokens. `CREW_VERBOSE` controls whether CrewAI prints progress (default `True`).
-3. Run the ingestion script before starting the bot:
+2. Create a `.env` file based on `.env.example` and provide your tokens. Set
+   `OPENAI_API_KEY` and optionally `OPENAI_API_BASE` if using a custom endpoint.
+   `CREW_VERBOSE` controls whether CrewAI prints progress (default `True`). If
+   ingestion fails with a 404 error, verify that `OPENAI_API_BASE` matches the
+   provider URL.
+3. Build the index by running the ingestion script:
 ```bash
 python scripts/ingest_document.py
 ```
+   This reads `data/documento.txt` and writes the FAISS index to
+   `vector_store/faiss_index`. Edit `scripts/ingest_document.py` if you
+   want to use different paths.
 4. Start the bot:
 ```bash
 python -m app.main
