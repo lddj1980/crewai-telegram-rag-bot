@@ -11,10 +11,8 @@ def test_ingest_document(tmp_path: Path, monkeypatch) -> None:
     faiss_module = ModuleType("faiss")
     faiss_module.FAISS = Mock()
 
-    monkeypatch.setitem(
-        sys.modules, "langchain_community.embeddings", ModuleType("emb")
-    )
-    sys.modules["langchain_community.embeddings"].OpenAIEmbeddings = embeddings_cls
+    monkeypatch.setitem(sys.modules, "langchain_openai", ModuleType("openai"))
+    sys.modules["langchain_openai"].OpenAIEmbeddings = embeddings_cls
     monkeypatch.setitem(sys.modules, "langchain.text_splitter", ModuleType("split"))
     sys.modules["langchain.text_splitter"].RecursiveCharacterTextSplitter = splitter_cls
     monkeypatch.setitem(

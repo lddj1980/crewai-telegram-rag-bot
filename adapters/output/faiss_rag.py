@@ -14,7 +14,7 @@ class FAISSRAG(RAGPort):
                 f"Index not found at {index_path}. Run ingest_document.py first."
             )
 
-        from langchain_community.embeddings import OpenAIEmbeddings
+        from langchain_openai import OpenAIEmbeddings
         from langchain_community.vectorstores import FAISS
 
         self.index_path = index_path

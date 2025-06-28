@@ -9,7 +9,9 @@ See `AGENTS.md` for contributor guidelines.
 ```bash
 pip install -r requirements.txt
 ```
-2. Create a `.env` file based on the variables in `.env.example` and provide your tokens. `CREW_VERBOSE` controls whether CrewAI prints progress (default `True`).
+2. Create a `.env` file based on `.env.example` and provide your tokens. Set
+   `OPENAI_API_KEY` and `OPENAI_API_BASE` for the DeepSeek API. `CREW_VERBOSE`
+   controls whether CrewAI prints progress (default `True`).
 3. Build the index by running the ingestion script:
 ```bash
 python scripts/ingest_document.py
