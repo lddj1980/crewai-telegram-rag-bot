@@ -3,7 +3,8 @@
 The text is loaded from ``DATA_FILE`` (``data/documento.txt`` by default) and
 the resulting index is stored in ``INDEX_DIR`` (``vector_store/faiss_index``).
 OpenAI credentials are read from the environment. Set ``OPENAI_API_KEY`` and
-``OPENAI_API_BASE`` before running. Run this script once before starting the bot.
+optionally ``OPENAI_API_BASE`` before running. Run this script once before
+starting the bot.
 """
 
 from pathlib import Path
@@ -17,7 +18,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-REQUIRED_VARS = ("OPENAI_API_KEY", "OPENAI_API_BASE")
+REQUIRED_VARS = ("OPENAI_API_KEY",)
 
 DATA_FILE = Path("data/documento.txt")
 INDEX_DIR = Path("vector_store/faiss_index")
