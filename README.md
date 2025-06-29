@@ -2,6 +2,18 @@
 
 This project implements a Telegram bot that answers questions using Retrieval-Augmented Generation (RAG) powered by CrewAI. The bot uses a vector store based on FAISS and the OpenAI API to generate responses.
 
+## Purpose
+The goal of this bot is to provide a lightweight example of how agent-driven RAG can be embedded in a simple chat interface. It ingests a document, indexes it with FAISS, and then allows users to query that document through Telegram. Answers are composed by a small set of autonomous agents working together.
+
+## Agent Architecture
+The application follows a layered architecture where the `QAService` coordinates three CrewAI agents:
+
+1. **QuestionAnalyst** – examines the user's question and extracts the main topics.
+2. **ContentResearcher** – searches the FAISS index for document snippets related to those topics using a `DocumentSearchTool`.
+3. **AnswerWriter** – generates the final reply using the retrieved snippets and an OpenAI model.
+
+These agents are orchestrated as CrewAI tasks so that each stage feeds into the next. The Telegram bot adapter simply forwards incoming messages to this service.
+
 See `AGENTS.md` for contributor guidelines.
 
 ## Setup
