@@ -12,7 +12,29 @@ except Exception:  # pragma: no cover - fallback when pydantic isn't installed
 try:  # pragma: no cover - optional dependency
     from langchain_core.tools import BaseTool
 except Exception:  # pragma: no cover - fallback when langchain isn't installed
-    BaseTool = object  # type: ignore[misc]
+    try:  # pragma: no cover - attempt pydantic-based replacement
+        from pydantic import BaseModel
+
+        from typing import Any
+
+        class BaseTool(BaseModel):  # type: ignore[misc]
+            """Minimal BaseTool replacement."""
+
+            name: str = ""
+            description: str = ""
+
+            def __init__(self, **data: Any) -> None:  # pragma: no cover - simple init
+                super().__init__(**data)
+
+            def _run(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
+                raise NotImplementedError
+
+            async def _arun(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
+                raise NotImplementedError
+
+    except Exception:  # pragma: no cover - ultimate fallback
+        class BaseTool:  # type: ignore[misc]
+            pass
 
 
 class DocumentSearchTool(BaseTool):
