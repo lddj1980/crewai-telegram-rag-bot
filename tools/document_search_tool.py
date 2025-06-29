@@ -20,15 +20,15 @@ class DocumentSearchTool(BaseTool):
 
     name: str = "document_search"
     description: str = "Busca trechos relevantes em um documento."
-    rag: RAGPort = PrivateAttr()
+    _rag: RAGPort = PrivateAttr()
 
     def __init__(self, rag: RAGPort) -> None:
         super().__init__()
-        self.rag = rag
+        self._rag = rag
 
     def run(self, query: str) -> List[str]:
         """Return snippets matching the query."""
-        return self.rag.query(query)
+        return self._rag.query(query)
 
     def _run(self, query: str) -> str:  # pragma: no cover - crewai usage
         return "\n".join(self.run(query))
