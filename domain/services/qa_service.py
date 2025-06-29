@@ -49,56 +49,61 @@ class QAService:
             context = self.researcher.research(topics)
             return self.writer.write(question, context)
 
-        analyst_agent = Agent(
-            role="Analista de Perguntas",
-            goal=(
-                "Compreender a pergunta do usuário e identificar tópicos principais"
-            ),
-            backstory=(
-                "Especialista em entender perguntas complexas e transformá-las em tópicos"
-            ),
-            llm=self.analyst.llm,  # type: ignore[arg-type]
-        )
+        try:
+            analyst_agent = Agent(
+                role="Analista de Perguntas",
+                goal=(
+                    "Compreender a pergunta do usuário e identificar tópicos principais"
+                ),
+                backstory=(
+                    "Especialista em entender perguntas complexas e transformá-las em tópicos"
+                ),
+                llm=self.analyst.llm,  # type: ignore[arg-type]
+            )
 
-        researcher_agent = Agent(
-            role="Pesquisador de Conteúdo",
-            goal="Buscar trechos relevantes no documento com base nos tópicos",
-            backstory="Especialista em encontrar informação textual precisa",
-            tools=[self.researcher.tool],
-            llm=self.writer.llm,  # type: ignore[arg-type]
-        )
+            researcher_agent = Agent(
+                role="Pesquisador de Conteúdo",
+                goal="Buscar trechos relevantes no documento com base nos tópicos",
+                backstory="Especialista em encontrar informação textual precisa",
+                tools=[self.researcher.tool],
+                llm=self.writer.llm,  # type: ignore[arg-type]
+            )
 
-        writer_agent = Agent(
-            role="Redator Especializado",
-            goal="Escrever uma resposta clara e útil baseada no conteúdo encontrado",
-            backstory="Redator experiente com clareza textual e didática",
-            llm=self.writer.llm,  # type: ignore[arg-type]
-        )
+            writer_agent = Agent(
+                role="Redator Especializado",
+                goal="Escrever uma resposta clara e útil baseada no conteúdo encontrado",
+                backstory="Redator experiente com clareza textual e didática",
+                llm=self.writer.llm,  # type: ignore[arg-type]
+            )
 
-        analyze = Task(
-            description="Identifique os tópicos principais da pergunta: {question}",
-            expected_output="Uma lista resumida de tópicos",
-            agent=analyst_agent,
-        )
+            analyze = Task(
+                description="Identifique os tópicos principais da pergunta: {question}",
+                expected_output="Uma lista resumida de tópicos",
+                agent=analyst_agent,
+            )
 
-        research = Task(
-            description="Pesquise no documento usando os tópicos: {analyze}",
-            expected_output="Trechos relevantes do documento",
-            agent=researcher_agent,
-        )
+            research = Task(
+                description="Pesquise no documento usando os tópicos: {analyze}",
+                expected_output="Trechos relevantes do documento",
+                agent=researcher_agent,
+            )
 
-        write = Task(
-            description=(
-                "Redija a resposta para a pergunta '{question}' usando o contexto: {research}"
-            ),
-            expected_output="Uma resposta clara para o usuário",
-            agent=writer_agent,
-        )
+            write = Task(
+                description=(
+                    "Redija a resposta para a pergunta '{question}' usando o contexto: {research}"
+                ),
+                expected_output="Uma resposta clara para o usuário",
+                agent=writer_agent,
+            )
 
-        crew = Crew(
-            agents=[analyst_agent, researcher_agent, writer_agent],
-            tasks=[analyze, research, write],
-            verbose=self.verbose,
-        )
+            crew = Crew(
+                agents=[analyst_agent, researcher_agent, writer_agent],
+                tasks=[analyze, research, write],
+                verbose=self.verbose,
+            )
 
-        return crew.kickoff(inputs={"question": question})
+            return crew.kickoff(inputs={"question": question})
+        except Exception:  # pragma: no cover - fallback on any CrewAI error
+            topics = self.analyst.analyze(question)
+            context = self.researcher.research(topics)
+            return self.writer.write(question, context)
