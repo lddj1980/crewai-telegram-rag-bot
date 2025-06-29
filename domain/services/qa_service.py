@@ -32,6 +32,7 @@ class QAService:
         try:
             from crewai import Agent, Task, Crew
         except Exception:  # pragma: no cover - used only when CrewAI isn't installed
+            # Fallback to a simple sequential pipeline when CrewAI is unavailable
             topics = self.analyst.analyze(question)
             context = self.researcher.research(topics)
             return self.writer.write(question, context)
@@ -45,6 +46,7 @@ class QAService:
             if not all(hasattr(llm, "supports_stop_words") for llm in llms):
                 raise RuntimeError
         except Exception:
+            # If any check fails, run the simpler pipeline instead of CrewAI
             topics = self.analyst.analyze(question)
             context = self.researcher.research(topics)
             return self.writer.write(question, context)
@@ -104,6 +106,7 @@ class QAService:
 
             return crew.kickoff(inputs={"question": question})
         except Exception:  # pragma: no cover - fallback on any CrewAI error
+            # If anything goes wrong in the CrewAI pipeline, run the simpler path
             topics = self.analyst.analyze(question)
             context = self.researcher.research(topics)
             return self.writer.write(question, context)

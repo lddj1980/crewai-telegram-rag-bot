@@ -1,4 +1,7 @@
 __pycache__/
+# Local environment variables
 .env
+*.env
+
 vector_store/*
 !vector_store/.gitkeep

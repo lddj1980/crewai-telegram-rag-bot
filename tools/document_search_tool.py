@@ -48,6 +48,7 @@ class DocumentSearchTool(BaseTool):
 
     def __init__(self, rag: RAGPort) -> None:
         super().__init__()
+        # Underlying RAG adapter used to fetch snippets
         self._rag = rag
 
     def run(self, query: str) -> List[str]:
