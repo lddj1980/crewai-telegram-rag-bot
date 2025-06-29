@@ -19,6 +19,7 @@ class FAISSRAG(RAGPort):
 
         self.index_path = index_path
         self.embeddings = OpenAIEmbeddings()
+        # Load the FAISS store created by the ingestion script
         self.store = FAISS.load_local(
             str(index_path),
             self.embeddings,

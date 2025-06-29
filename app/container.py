@@ -16,15 +16,18 @@ class Container:
 
     def __init__(self) -> None:
         index_dir = Path("vector_store/faiss_index")
+        # Infrastructure adapters
         rag = FAISSRAG(index_dir)
         llm = OpenAILLM()
         tool = DocumentSearchTool(rag)
         verbose = os.getenv("CREW_VERBOSE", "True").lower() in ("1", "true", "yes")
 
+        # Domain agents
         analyst = QuestionAnalyst(llm=llm)
         researcher = ContentResearcher(tool=tool)
         writer = AnswerWriter(llm=llm)
 
+        # Service that orchestrates the crew
         self.qa_service = QAService(
             analyst=analyst,
             researcher=researcher,

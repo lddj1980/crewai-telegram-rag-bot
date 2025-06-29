@@ -14,6 +14,18 @@ The application follows a layered architecture where the `QAService` coordinates
 
 These agents are orchestrated as CrewAI tasks so that each stage feeds into the next. The Telegram bot adapter simply forwards incoming messages to this service.
 
+### Architecture Diagram
+```mermaid
+flowchart TD
+    TG["Telegram user"] --> BOT["TelegramBot"]
+    BOT --> SERVICE["QAService"]
+    SERVICE --> ANALYST["QuestionAnalyst"]
+    ANALYST --> RESEARCHER["ContentResearcher"]
+    RESEARCHER --> WRITER["AnswerWriter"]
+    WRITER --> SERVICE
+    SERVICE --> TG
+```
+
 See `AGENTS.md` for contributor guidelines.
 
 ## Setup
@@ -21,11 +33,11 @@ See `AGENTS.md` for contributor guidelines.
 ```bash
 pip install -r requirements.txt
 ```
-2. Create a `.env` file based on `.env.example` and provide your tokens. Set
-   `OPENAI_API_KEY` and optionally `OPENAI_API_BASE` if using a custom endpoint.
-   `CREW_VERBOSE` controls whether CrewAI prints progress (default `True`). If
-   ingestion fails with a 404 error, verify that `OPENAI_API_BASE` matches the
-   provider URL.
+2. Create a `.env` file based on `.env.example` and provide your tokens. This
+   file is ignored by Git. Set `OPENAI_API_KEY` and optionally `OPENAI_API_BASE`
+   if using a custom endpoint. `CREW_VERBOSE` controls whether CrewAI prints
+   progress (default `True`). If ingestion fails with a 404 error, verify that
+   `OPENAI_API_BASE` matches the provider URL.
 3. Build the index by running the ingestion script:
 ```bash
 python scripts/ingest_document.py
@@ -38,8 +50,7 @@ python scripts/ingest_document.py
 ```bash
 python -m app.main
 ```
-5. Abra o aplicativo do Telegram, procure pelo nome do seu bot e envie o
-   comando `/start`. Em seguida, envie suas perguntas como mensagens de texto
-   para receber as respostas geradas pelo RAG.
+5. Open Telegram, search for your bot's name and send the `/start` command.
+   Then type your questions as text messages to receive the RAG-powered answers.
 
 Run tests with `pytest -q`.

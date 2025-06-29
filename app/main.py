@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 def main() -> None:
     load_dotenv()
     container = Container()
+    # Start the Telegram bot
     container.bot.run()
 
 

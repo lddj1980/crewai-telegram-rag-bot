@@ -36,6 +36,7 @@ def main() -> None:
 
     text = DATA_FILE.read_text(encoding="utf-8")
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    # Split the document and create embeddings for each chunk
     docs = splitter.create_documents([text])
     embeddings = OpenAIEmbeddings()
     store = FAISS.from_documents(docs, embeddings)
