@@ -9,32 +9,34 @@ except Exception:  # pragma: no cover - fallback when pydantic isn't installed
         return default
 
 
-try:  # pragma: no cover - optional dependency
-    from langchain_core.tools import BaseTool
-except Exception:  # pragma: no cover - fallback when langchain isn't installed
-    try:  # pragma: no cover - attempt pydantic-based replacement
-        from pydantic import BaseModel
+try:  # pragma: no cover - prefer CrewAI BaseTool when available
+    from crewai.tools.base_tool import BaseTool
+except Exception:  # pragma: no cover - fallback when CrewAI isn't installed
+    try:  # pragma: no cover - optional dependency
+        from langchain_core.tools import BaseTool
+    except Exception:  # pragma: no cover - fallback when langchain isn't installed
+        try:  # pragma: no cover - attempt pydantic-based replacement
+            from pydantic import BaseModel
+            from typing import Any
 
-        from typing import Any
+            class BaseTool(BaseModel):  # type: ignore[misc]
+                """Minimal BaseTool replacement."""
 
-        class BaseTool(BaseModel):  # type: ignore[misc]
-            """Minimal BaseTool replacement."""
+                name: str = ""
+                description: str = ""
 
-            name: str = ""
-            description: str = ""
+                def __init__(self, **data: Any) -> None:  # pragma: no cover - simple init
+                    super().__init__(**data)
 
-            def __init__(self, **data: Any) -> None:  # pragma: no cover - simple init
-                super().__init__(**data)
+                def _run(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
+                    raise NotImplementedError
 
-            def _run(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
-                raise NotImplementedError
+                async def _arun(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
+                    raise NotImplementedError
 
-            async def _arun(self, *args: str, **kwargs: str) -> str:  # pragma: no cover - stub
-                raise NotImplementedError
-
-    except Exception:  # pragma: no cover - ultimate fallback
-        class BaseTool:  # type: ignore[misc]
-            pass
+        except Exception:  # pragma: no cover - ultimate fallback
+            class BaseTool:  # type: ignore[misc]
+                pass
 
 
 class DocumentSearchTool(BaseTool):
