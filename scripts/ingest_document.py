@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 REQUIRED_VARS = ("OPENAI_API_KEY",)
+
 DATA_FILE = Path("data/documento.txt")
 INDEX_DIR = Path("vector_store/faiss_index")
 
